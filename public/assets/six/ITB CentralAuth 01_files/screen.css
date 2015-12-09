@@ -1,0 +1,335 @@
+/* CSS Document */
+
+/* 
+
+Designed by Widianto Nugroho / http://studio.xploitdesign.com
+Powered by cups of hot coffee
+
+*/
+
+
+/* Layout */
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+#header, #footer, .clearboth {
+	clear: both;
+}
+
+#top {
+	margin: 0;
+	padding: 0 3%;
+}
+
+#topleft, #topright {
+	margin: 0;
+	padding: 16px 0;
+}
+
+hr {
+	display: none;
+}
+
+.wrap {
+	margin: 0 auto;
+/*	max-width: 62em; */
+	width: 960px;
+}
+
+#wraptop .spacer {
+	margin: 0 2%;
+	padding: 0;
+}
+
+#wrapmain .spacer {
+	margin: 0 2%;
+	padding: 8px 2%;
+}
+
+.floatleft {
+	float: left;
+}
+
+.floatright {
+	float: right;
+}
+
+.contentwide {
+	width: 80%;
+/*	margin: 0 4% 24px 0; */
+}
+
+.content {
+	width: 72%;
+}
+
+.sideright {
+	width: 24%;
+}
+
+.sideleft {
+	width: 17%;
+/*	margin: 0 0 24px 3%; */
+}
+
+.node, .block, .dir {
+	margin: 0;
+	padding: 8px 0;
+}
+
+#appcat {
+	border-top: 5px solid #ccc;
+}
+
+#footer .floatleft, #footer .floatright {
+	padding: 16px 0 8px;
+	border-top: 1px solid #999;
+}
+
+
+/* Colors */
+
+body {
+	color: #333;
+	background-color: #ccc;
+}
+
+.wrap .spacer {
+	background-color: #fff;
+}
+
+#top {
+	color: #888;
+	background-color: #336;
+}
+
+#header {
+	margin: 0;
+	padding: 0;
+	background-color: #3737c8;
+	background-position: left center;
+	background-repeat: no-repeat;
+	background-image: url(header.png);
+}
+
+#header h1 {
+	margin: 0;
+	padding: 0;
+}
+
+.path {
+	line-height: 20px;
+	text-indent : 0;
+	background-image: url(../img/icon_dir_up_list.png);
+	background-repeat: no-repeat;
+	padding-left: 20px;
+}
+
+.node h3, .block h3, .dir h3 {
+	border-bottom: 1px solid #ccc;
+}
+
+
+/* Fonts */
+
+body, input {
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+
+#top {
+	font-size: 0.75em;
+}
+
+#topleft a {
+	font-weight: bold;
+}
+
+#header h1 {
+}
+
+#home #header, #home #header h1 {
+	height: 125px;
+}
+
+#page #header, #page #header h1 {
+	height: 125px;
+}
+
+#header h1 span {
+	display: none;
+}
+
+.node {
+	font-size: 0.8em;
+}
+
+.block, .dir {
+	font-size: 0.8em;
+}
+
+ul.filelist {
+	margin: 0;
+	padding: 4px 0;
+	list-style : none;
+}
+
+ul.filelist li {
+	margin: 0;
+	padding: 4px 0 4px 20px;
+	text-indent: 0;
+	background: url(../img/icon_file_list.png) no-repeat 1px 6px;
+	line-height: 1.3em;
+}
+
+.warning {
+	padding: 0.5em;
+	color: #f00;
+	background-color: #ccc;
+	font-size: 1.5em;
+}
+
+#footer {
+	font-size: 0.7em;
+}
+
+
+/* Navigation */
+
+a {
+	text-decoration: none;
+}
+
+#main a, #footer a {
+	color: #039;
+	text-decoration: none;
+	border-bottom: 1px dotted #039;
+}
+
+#main a:hover, #footer a:hover {
+	color: #03f;
+	text-decoration: none;
+	border-bottom: 1px solid #03f;
+}
+
+#top a {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: 1px dotted #999;
+}
+
+#top a:hover {
+	color: #3cf;
+	border-bottom: 1px solid #3cf;
+}
+
+#header h1 a {
+	color: #fff;
+}
+
+#header h1 a:hover {
+	color: #ccc;
+}
+
+.block ul {
+	list-style: none;
+	margin: 0;
+	padding: 0 0 16px;
+}
+
+.block ul li {
+	margin: 0;
+	padding: 6px;
+	display: block;
+	border-bottom: 1px solid #ccc;
+}
+
+.dir ul {
+	list-style: none;
+	margin: 0;
+	padding: 0 0 16px;
+}
+
+.dir ul li {
+	margin: 0;
+	padding: 6px 0 6px 24px;
+	display: block;
+	border-bottom: 1px solid #ccc;
+	background-image: url(../img/icon_dir_list.png);
+	background-repeat: no-repeat;
+	background-position: 0px 6px;
+}
+
+
+/* Tables */
+
+table.metatable th {
+	padding: 8px;
+	color: #fff;
+	background-color: #36c;
+}
+
+table.metatable td {
+	vertical-align: top;
+	padding: 6px;
+	font-size: 1em;
+}
+
+table.metatable td:hover {
+	background-color: #fc0;
+}
+
+table.metatable tr {
+	background-color: #ccc;
+}
+
+table.metatable tr:hover {
+	background-color: #eee;
+}
+
+
+/* Forms */
+
+.block form {
+	margin: 0;
+}
+
+.textsearch {
+	border: 3px solid #ddd;
+	background-color: #ddd;
+}
+
+.textsearch:hover {
+	border: 3px solid #36c;
+	background-color: #fff;
+}
+
+.submit {
+	margin-top: 2px;
+	color: #fff;
+	background-color: #36c;
+	border: 2px solid #36c;
+	font-weight: bold;
+}
+
+.submit:hover {
+	color: #000;
+	background-color: #69f;
+	border: 2px solid #69f;
+}
+
+#loginform {
+	font-size: 1.5em;
+}
+
+#loginform input {
+	background-color: #eee;
+	border: 5px solid #999;
+}
+
+#loginform input:hover {
+	background-color: #66FFFF;
+	border: 5px solid #3737c8;
+}

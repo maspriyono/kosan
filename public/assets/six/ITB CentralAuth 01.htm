@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>ITB CentralAuth</title>
+
+<link href="ITB%20CentralAuth%2001_files/screen.css" rel="stylesheet" type="text/css" media="screen">
+
+</head>
+
+<body id="home">
+<div id="wraptop" class="wrap">
+	<div class="spacer">
+		<div id="top">
+			<div id="topleft" class="floatleft">
+				<a href="http://www.itb.ac.id/">ITB | Institut Teknologi Bandung</a>
+				&nbsp;/&nbsp;
+				<a href="http://www.ditdik.itb.ac.id/">Direktorat Pendidikan</a>
+			</div>
+			<hr>
+			<div id="topright" class="floatright">
+				<!--a href="kontak.php">Kontak</a> / <a href="faq.php">F.A.Q.</a> / <a href="https://login.itb.ac.id/credits.php">Credits</a>-->
+			</div>
+			
+			<div class="clearboth"></div>
+		</div>
+		<hr>
+		
+		<div id="header">
+			<h1><a href=""><span>Central Authentication ITB</span></a></h1>
+			<div class="clearboth"></div>
+		</div>
+	</div>
+</div>
+
+<hr>
+
+<div id="wrapmain" class="wrap">
+	<div class="spacer">
+		<div id="main">
+			<div id="contentwide" class="contentwide floatright">
+				<div id="content" class="content floatleft">
+					<div class="node">
+
+					<!-- START: userid.tpl.html -->
+
+<h3>Petunjuk</h3>
+<p>Anda menuju ke situs <strong>SIX</strong>.</p>
+<p>Masukkan User ID dan Password Anda untuk dapat mengakses aplikasi yang tersedia.</p>
+
+<h3>Login</h3>
+
+
+<form method="post" name="f" id="loginform">
+<table border="0" width="75%">
+	<tbody><tr>
+		<td>User ID</td>
+		<td>
+			<input tabindex="1" name="user_id" type="text">
+		</td>
+	</tr>
+
+	<tr>
+		<td>Password</td>
+		<td>
+			<input tabindex="2" name="password" type="password">
+		</td>
+	</tr>
+
+			<tr>
+		<td>Teks Gambar</td>
+		<td>
+			<input tabindex="3" name="captcha" type="text">
+			<input name="captcha_token" value="798955761" type="hidden">
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>
+			<img src="ITB%20CentralAuth%2001_files/captcha.png">
+		</td>
+	</tr>
+	
+	</tbody></table>
+
+	<br>
+	<input name="submit" value="Login" type="submit">
+	<a href="https://auth.akademik.itb.ac.id/idp/module.php/six/resetpassword.php">Lupa Password</a>
+</form>
+
+<h3>Proxy ITB</h3>
+<p>
+	Anda mengakses situs ini via Proxy ITB.<br><br>
+	Untuk efisiensi traffic, ubahlah konfigurasi pada browser Anda untuk 
+mengecualikan situs-situs internal ITB agar tidak perlu lewat proxy.<br>
+	Keterangan lebih lanjut dapat dilihat di:<br>
+	* <a href="http://info.usdi.itb.ac.id/tw/tiki-index.php?page=konfigurasi_proxy">Konfigurasi Proxy untuk Jelajah Internet di Jaringan ITB</a><br>
+	* <a href="https://nic.itb.ac.id/cake/articles/view/14">Bagaimana cara agar pemakaian trafik lokal tidak dihitung dalam kuota</a>
+</p>
+<br>
+<!-- END: userid.tpl.html -->
+				</div>
+			</div>
+			<hr>
+			
+			<div id="sidebarright" class="sideright floatright">
+				<div class="block">
+					<h3>Sistem Informasi</h3>
+					<ul>
+												<li><a href="https://six.akademik.itb.ac.id/six/">SIX</a></li>
+						<li><a href="https://ol.akademik.itb.ac.id/">OL Akademik</a></li>
+						<li><a href="https://publik.akademik.itb.ac.id/seven/">Publik</a></li>
+						<li><a href="https://pmb.akademik.itb.ac.id/six/">Backend PMB</a></li>
+						<li><a href="https://admin.akademik.itb.ac.id/six/">Administrasi</a></li>
+											</ul>
+				</div>
+			</div>
+			
+			<div class="clearboth"></div>
+		</div>
+		
+		<hr>
+
+		<div id="sidebarleft" class="sideleft floatleft">
+			<div class="block">
+				<h3>Bahasa</h3>
+								<ul>
+					<li><a href="https://auth.akademik.itb.ac.id/idp/module.php/six/setpref.php?lang=id&amp;returnto=https%3A%2F%2Fauth.akademik.itb.ac.id%2Fidp%2Fmodule.php%2Fsix%2F%3FAuthState%3D_34e606fd60f7a05feef18ad4c28ad07f6a2f4a555f%253Ahttps%253A%252F%252Fauth.akademik.itb.ac.id%252Fidp%252Fsaml2%252Fidp%252FSSOService.php%253Fspentityid%253Dsix.akademik.itb.ac.id%25252Fsix%2526RelayState%253Dhttps%25253A%25252F%25252Fsix.akademik.itb.ac.id%25252Fsix%25252F">Bahasa Indonesia</a></li>
+					<li><a href="https://auth.akademik.itb.ac.id/idp/module.php/six/setpref.php?lang=en&amp;returnto=https%3A%2F%2Fauth.akademik.itb.ac.id%2Fidp%2Fmodule.php%2Fsix%2F%3FAuthState%3D_34e606fd60f7a05feef18ad4c28ad07f6a2f4a555f%253Ahttps%253A%252F%252Fauth.akademik.itb.ac.id%252Fidp%252Fsaml2%252Fidp%252FSSOService.php%253Fspentityid%253Dsix.akademik.itb.ac.id%25252Fsix%2526RelayState%253Dhttps%25253A%25252F%25252Fsix.akademik.itb.ac.id%25252Fsix%25252F">English</a></li>
+				</ul>
+				
+				<h3>Informasi</h3>
+				<ul>
+					<li><a href="https://auth.akademik.itb.ac.id/idp/module.php/six/resetpassword.php">Lupa Password</a></li>
+										<li><a href="https://auth.akademik.itb.ac.id/idp/module.php/six/info.php?page=mahasiswa">Mahasiswa ITB</a></li>
+					<li><a href="https://auth.akademik.itb.ac.id/idp/module.php/six/info.php?page=orangtua">Orang Tua Mahasiswa</a></li>
+									</ul>
+			</div>
+		</div>
+		
+		<div class="clearboth"></div>
+	</div>
+	<hr>
+	
+	<div id="footer">
+		<p class="contentwide floatright">
+		<a href="http://www.ditdik.itb.ac.id/">Direktorat Pendidikan</a>
+		 <a href="http://www.itb.ac.id/">Institut Teknologi Bandung</a>
+		 . All Rights Reserved.</p>
+		<hr>
+		
+		<p class="sideleft floatleft">
+		<a href="https://login.itb.ac.id/credits.php">Design Credits</a>
+		</p>
+		<div class="clearboth"></div>
+	</div>
+</div>
+
+
+
+
+</div></body></html>
+<!-- Thu, 17 Sep 2015 13:43:20 +0700 -->

@@ -1,0 +1,113 @@
+<style type="text/css">
+.tab-button {
+  border:3px solid rgb(9,114,165);
+  background-color:#ff9;
+  border-radius:10px;
+  color:#000
+}
+.tab-button-disabled {
+  border:3px solid rgb(9,114,165);
+  background-color:#ff9;
+  border-radius:10px;
+  color:#999
+}
+</style>
+<div class="simtu-helper-tabs">
+  <ul>
+    <li><a href="#tab-sync">Sinkronisasi</a></li>
+  </ul>
+  <div id="tab-sync">
+    <p>Sinkronisasi halaman SIX: Tambah dan Hapus Wisudawan</p>
+    <p>
+      <strong>Periode:</strong> <span id="tab-sync-period">Tidak diketahui</span><br />
+      <strong>Tahun:</strong> <span id="tab-sync-year">Tidak diketahui</span><br />
+      <p id="tab-sync-graduates"></p>
+    </p>
+    <p style="text-decoration:underline">Keterangan:</p>
+    <p><span style="background-color:#d6e7ef;border:1px solid white">&nbsp;&nbsp;&nbsp;&nbsp;</span> NIM wisudawan terdaftar di SIX dan SIMTU</p>
+    <p><span style="background-color:#f99;border:1px solid white">&nbsp;&nbsp;&nbsp;&nbsp;</span> NIW wisudawan terdaftar di SIX tetapi tidak di SIMTU</p>
+    <p> </p>
+  </div>
+</div>
+<script type="text/javascript">
+// Gives style to jQuery selection
+function styler(jQuerySelection) {
+  $(jQuerySelection).css("border", "3px solid rgb(9,114,165)");
+  $(jQuerySelection).css("background-color", "#d6e7ef");
+}
+
+// Gives style to jQuery selection for student listed in SIX but not in SIMTU
+function styler2(jQuerySelection) {
+  $(jQuerySelection).css("border", "3px solid rgb(9,114,165)");
+  $(jQuerySelection).css("background-color", "#f99");
+}
+
+// Get NIM columns from SIX page
+var jQS_NIM = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(5) > table:nth-child(6) > tbody:nth-child(1) td:nth-child(3)";
+
+// Iterate NIMs and check between SIMTU and SIX
+var json = '{';
+
+$(jQS_NIM).each(function(index, value) {
+  if (index != 0) {
+    json += '"' + value.innerHTML + '" : ' + index;
+
+    if (index != ($(jQS_NIM).size()-1)) {
+      json += ',';
+    }
+  }
+});
+
+json += '}';
+
+var jQS_NIMObj = JSON.parse(json);
+
+// Get period
+var s = $(".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > h3:nth-child(2)").html();
+var m = s.match(/([^\?]*)Wisuda (\S+) (\S+)/);
+
+if (typeof m[2] !== 'undefined');
+  $("#tab-sync-period").html(m[2]);
+
+if (typeof m[3] !== 'undefined');
+  $("#tab-sync-year").html(m[3]);
+
+// Get graduates list from SIMTU
+$.ajax({
+    method: "GET",
+    url: "http://localhost/api/GetGraduatesList",
+    headers: {
+      "Accept": "application/json"
+    },
+    data: {
+      period: m[2],
+      year: m[3]
+    }
+  }).done(function(obj) {
+    if (obj.count > 0) {
+
+      $(jQS_NIM).each(function(index, value) {
+        if (index != 0) {
+          if (obj.data.indexOf(value.innerHTML) != -1) {
+            styler($(jQS_NIM).eq(index));
+          } else {
+            styler2($(jQS_NIM).eq(index));
+          }
+        }
+      });
+
+      var graduatesListHtml = '';
+
+      for (var i = 0; i < obj.data.length; i++) {
+
+        if (obj.data[i] in jQS_NIMObj) {
+          graduatesListHtml += '<form method="post">' + obj.data[i] + ' <input type="hidden" name="nim" value="' + obj.data[i] +'" /><button class="tab-button" name="action" value="Hapus">Hapus</button></form>';
+        } else {
+          graduatesListHtml += '<form method="post">' + obj.data[i] + ' <input type="hidden" name="nim" value="' + obj.data[i] +'" /><button class="tab-button" name="action" value="Tambah">Tambah</button></form>';        }
+      }
+      $("#tab-sync-graduates").html(graduatesListHtml);
+    } else {
+      $("#tab-sync-graduates").html("<strong>Tidak ada wisudawan yang terdaftar pada periode ini.</strong>");
+    }
+  });
+</script>

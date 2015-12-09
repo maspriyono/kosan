@@ -1,0 +1,353 @@
+<style type="text/css">
+.tab-button {
+  border:3px solid rgb(9,114,165);
+  background-color:#ff9;
+  border-radius:10px;
+  color:#000
+}
+.tab-button-disabled {
+  border:3px solid rgb(9,114,165);
+  background-color:#ff9;
+  border-radius:10px;
+  color:#999
+}
+</style>
+<div class="simtu-helper-tabs">
+  <ul>
+    <li><a href="#tab-sync">Sinkronisasi</a></li>
+  </ul>
+  <div id="tab-sync">
+    <p>Sinkronisasi halaman SIX: Edit Data Wisudawan</p>
+    <p><strong>NIM:</strong> <span id="tab-sync-nim">Tidak diketahui</span></p>
+    <button class="tab-button" id="tab-sync-simtu-to-six">Isi data dari SIMTU</button>
+    <button class="tab-button" id="tab-sync-reset">Atur ulang</button>
+    <p style="text-decoration:underline">Keterangan:</p>
+    <p><span style="background-color:#d6e7ef;border:1px solid white">&nbsp;&nbsp;&nbsp;&nbsp;</span> Data awal di SIX</p>
+    <p><span style="background-color:#ff9;border:1px solid white">&nbsp;&nbsp;&nbsp;&nbsp;</span> Data dari SIMTU</p>
+    <p><span style="background-color:#cfc;border:1px solid white">&nbsp;&nbsp;&nbsp;&nbsp;</span> Data dari halaman lain di SIX</p>
+    <p> </p>
+  </div>
+</div>
+<script type="text/javascript">
+var backup = new Array();
+
+function setBackup(e) {
+  backup[e] = $(e).val();
+}
+
+function getBackup(e) {
+  $(e).val(backup[e]);
+}
+
+// Get NIM
+if ($(".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3)").length) {
+  $("#tab-sync-nim").html($(".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3)").html());
+} else {
+  $("#tab-sync-simtu-to-six").removeClass("tab-button");
+  $("#tab-sync-simtu-to-six").addClass("tab-button-disabled");
+  $("#tab-sync-reset").removeClass("tab-button");
+  $("#tab-sync-reset").addClass("tab-button-disabled");
+}
+
+// Gives style to jQuery selection
+function styler(jQuerySelection) {
+  $(jQuerySelection).css("border", "3px solid rgb(9,114,165)");
+  $(jQuerySelection).css("background-color", "#d6e7ef");
+}
+
+// Gives style to jQuery selection after changes applied from SIMTU
+function styler2(jQuerySelection) {
+  $(jQuerySelection).css("border", "3px solid rgb(9,114,165)");
+  $(jQuerySelection).css("background-color", "#ff9");
+}
+
+// Gives style to jQuery selection after changes applied from SIX itself
+function styler3(jQuerySelection) {
+  $(jQuerySelection).css("border", "3px solid rgb(9,114,165)");
+  $(jQuerySelection).css("background-color", "#cfc");
+}
+
+// Error handling
+function errorHandler(e) {
+  console.log('Error "' + e.name + '": "' + e.message + '"');
+}
+
+// Select all editable elements, manually
+var jQS_JalurPilihan = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(4) > td:nth-child(3) > select:nth-child(1)";
+var jQS_AlamatBandung = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(3) > input:nth-child(1)";
+var jQS_KodePosBandung = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(3) > input:nth-child(2)";
+var jQS_Telepon = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(9) > td:nth-child(3) > input:nth-child(1)";
+var jQS_TeleponExt = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(9) > td:nth-child(3) > input:nth-child(2)";
+var jQS_Email = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(10) > td:nth-child(3) > input:nth-child(1)";
+var jQS_TanggalLulus = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(11) > td:nth-child(3) > select:nth-child(1)";
+var jQS_BulanLulus = "select.combo:nth-child(2)";
+var jQS_TahunLulus = "select.combo:nth-child(3)";
+var jQS_AlamatTetap = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(15) > td:nth-child(3) > input:nth-child(1)";
+var jQS_KodePosTetap = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(15) > td:nth-child(3) > input:nth-child(2)";
+var jQS_Judul = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(16) > td:nth-child(3) > textarea:nth-child(1)";
+var jQS_JudulBhsInggris = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(17) > td:nth-child(3) > textarea:nth-child(1)";
+var jQS_NIPPembimbing1 = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(18) > td:nth-child(3) > input:nth-child(1)";
+var jQS_NamaPembimbing1 = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(18) > td:nth-child(3) > input:nth-child(2)";
+var jQS_NIPPembimbing2 = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(19) > td:nth-child(3) > input:nth-child(1)";
+var jQS_NamaPembimbing2 = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(19) > td:nth-child(3) > input:nth-child(2)";
+var jQS_NIPPembimbing3 = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(20) > td:nth-child(3) > input:nth-child(1)";
+var jQS_NamaPembimbing3 = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(20) > td:nth-child(3) > input:nth-child(2)";
+var jQS_IPTahap1 = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(21) > td:nth-child(3) > input:nth-child(1)";
+var jQS_IPTahap3 = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(23) > td:nth-child(3) > input:nth-child(1)";
+var jQS_SKSTransfer = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(26) > td:nth-child(3) > input:nth-child(1)";
+var jQS_TOEFL = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(27) > td:nth-child(3) > input:nth-child(1)";
+var jQS_Predikat = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(28) > td:nth-child(3) > select:nth-child(1)";
+var jQS_NamaOrtu = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(29) > td:nth-child(3) > input:nth-child(1)";
+var jQS_AlamatOrtu = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(30) > td:nth-child(3) > input:nth-child(1)";
+var jQS_KodePosOrtu = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(30) > td:nth-child(3) > input:nth-child(2)";
+var jQS_KeteranganITB = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(31) > td:nth-child(3) > input:nth-child(1)";
+var jQS_Foto = ".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(34) > td:nth-child(3) > b:nth-child(1) > input:nth-child(1)";
+styler(jQS_JalurPilihan);
+styler(jQS_AlamatBandung);
+styler(jQS_KodePosBandung);
+styler(jQS_Telepon);
+styler(jQS_TeleponExt);
+styler(jQS_Email);
+styler(jQS_TanggalLulus);
+styler(jQS_BulanLulus);
+styler(jQS_TahunLulus);
+styler(jQS_AlamatTetap);
+styler(jQS_KodePosTetap);
+styler(jQS_Judul);
+styler(jQS_JudulBhsInggris);
+styler(jQS_NIPPembimbing1);
+styler(jQS_NamaPembimbing1);
+styler(jQS_NIPPembimbing2);
+styler(jQS_NamaPembimbing2);
+styler(jQS_NIPPembimbing3);
+styler(jQS_NamaPembimbing3);
+styler(jQS_IPTahap1);
+styler(jQS_IPTahap3);
+styler(jQS_SKSTransfer);
+styler(jQS_TOEFL);
+styler(jQS_Predikat);
+styler(jQS_NamaOrtu);
+styler(jQS_AlamatOrtu);
+styler(jQS_KodePosOrtu);
+styler(jQS_KeteranganITB);
+
+// Input file tidak dapat diatur atribut "value"-nya, tidak bisa diisi dengan data SIMTU, tidak perlu diberikan style
+//styler(jQS_Foto);
+
+// Save old data for resetting the form after user clicked "Atur ulang" button
+setBackup(jQS_JalurPilihan);
+setBackup(jQS_AlamatBandung);
+setBackup(jQS_KodePosBandung);
+setBackup(jQS_Telepon);
+setBackup(jQS_TeleponExt);
+setBackup(jQS_Email);
+setBackup(jQS_TanggalLulus);
+setBackup(jQS_BulanLulus);
+setBackup(jQS_TahunLulus);
+setBackup(jQS_AlamatTetap);
+setBackup(jQS_KodePosTetap);
+setBackup(jQS_Judul);
+setBackup(jQS_JudulBhsInggris);
+setBackup(jQS_NIPPembimbing1);
+setBackup(jQS_NamaPembimbing1);
+setBackup(jQS_NIPPembimbing2);
+setBackup(jQS_NamaPembimbing2);
+setBackup(jQS_NIPPembimbing3);
+setBackup(jQS_NamaPembimbing3);
+setBackup(jQS_IPTahap1);
+setBackup(jQS_IPTahap3);
+setBackup(jQS_SKSTransfer);
+setBackup(jQS_TOEFL);
+setBackup(jQS_Predikat);
+setBackup(jQS_NamaOrtu);
+setBackup(jQS_AlamatOrtu);
+setBackup(jQS_KodePosOrtu);
+setBackup(jQS_KeteranganITB);
+
+// Input file tidak dapat diatur atribut "value"-nya, tidak bisa diisi dengan data SIMTU, tidak perlu di-backup
+//setBackup(jQS_Foto);
+
+
+// "Isi data dari SIMTU" button click
+$("#tab-sync-simtu-to-six").click(function() {
+  $.ajax({
+    method: "GET",
+    url: "http://localhost/api/GetGraduatesForm",
+    headers: {
+      "Accept": "application/json"
+    },
+    data: {
+      nim: $(".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3)").html()
+    }
+  }).done(function(result) {
+    if (result.data.length == 1) {
+      var o = result.data[0];
+
+      // Dapatkan IP tahap I dan tahap III
+      var ip1;
+      var ip3;
+
+      $.ajax({
+        method: "GET",
+        url: "http://localhost/assets/six/wisuda/transkrip.php?nim=" + $(".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3)").html() + "&urut=1",
+      }).done(function(s) {
+        var m = s.match(/([^\?]*)Tahap Tahun Pertama IP (\d+.\d+)/);
+        var n = s.match(/([^\?]*)Tahap Sarjana IP (\d+.\d+)/);
+        ip1 = m[2];
+        ip3 = n[2];
+        
+        $(jQS_IPTahap1).val(ip1);
+        $(jQS_IPTahap3).val(ip3);
+        
+        styler3(jQS_IPTahap1);
+        styler3(jQS_IPTahap3);
+      });
+
+      // Dapatkan link untuk unduh foto
+      if (o.foto != null && o.foto != '') {
+        $(jQS_Foto).after('<a id="simtu-photo-download" style="border:3px solid rgb(9,114,165);background-color:#ff9;padding:5px;" href="http://localhost/' + o.foto + '" download="' + $(".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3)").html() + '.jpg">Unduh foto dari SIMTU</a>');
+      }
+
+      $(jQS_JalurPilihan).val(o.jalurpilihan);
+      $(jQS_AlamatBandung).val(o.alamatbdg);
+      $(jQS_KodePosBandung).val(o.kodeposbdg);
+      $(jQS_Telepon).val(o.telp);
+      $(jQS_TeleponExt).val(o.ext);
+      $(jQS_Email).val(o.email);
+
+      if (o.tanggallulus != null) {
+        var tanggalLulusParsed = o.tanggallulus.split("-");
+        $(jQS_TanggalLulus).val(tanggalLulusParsed[2]);
+        $(jQS_BulanLulus).val(tanggalLulusParsed[1]);
+        $(jQS_TahunLulus).val(tanggalLulusParsed[0]);
+      }
+
+      $(jQS_AlamatTetap).val(o.alamattetap);
+      $(jQS_KodePosTetap).val(o.kodepostetap);
+      $(jQS_Judul).val(o.judul);
+      $(jQS_JudulBhsInggris).val(o.juduleng);
+      $(jQS_NIPPembimbing1).val(o.nip1);
+      $(jQS_NamaPembimbing1).val(o.pembimbing1);
+      $(jQS_NIPPembimbing2).val(o.nip2);
+      $(jQS_NamaPembimbing2).val(o.pembimbing2);
+      $(jQS_NIPPembimbing3).val(o.nip3);
+      $(jQS_NamaPembimbing3).val(o.pembimbing3);
+      $(jQS_SKSTransfer).val(o.skstransfer);
+      $(jQS_TOEFL).val(o.skstransfer);
+      $(jQS_Predikat).val(o.predikat);
+      $(jQS_NamaOrtu).val(o.namaortu);
+      $(jQS_AlamatOrtu).val(o.alamatortu);
+      $(jQS_KodePosOrtu).val(o.kodeposortu);
+      $(jQS_KeteranganITB).val(o.keteranganitb);
+
+      // Input file tidak dapat diatur atribut "value"-nya
+      //$(jQS_Foto).val(o.foto);
+
+      styler2(jQS_JalurPilihan);
+      styler2(jQS_AlamatBandung);
+      styler2(jQS_KodePosBandung);
+      styler2(jQS_Telepon);
+      styler2(jQS_TeleponExt);
+      styler2(jQS_Email);
+      styler2(jQS_TanggalLulus);
+      styler2(jQS_BulanLulus);
+      styler2(jQS_TahunLulus);
+      styler2(jQS_AlamatTetap);
+      styler2(jQS_KodePosTetap);
+      styler2(jQS_Judul);
+      styler2(jQS_JudulBhsInggris);
+      styler2(jQS_NIPPembimbing1);
+      styler2(jQS_NamaPembimbing1);
+      styler2(jQS_NIPPembimbing2);
+      styler2(jQS_NamaPembimbing2);
+      styler2(jQS_NIPPembimbing3);
+      styler2(jQS_NamaPembimbing3);
+      styler2(jQS_SKSTransfer);
+      styler2(jQS_TOEFL);
+      styler2(jQS_Predikat);
+      styler2(jQS_NamaOrtu);
+      styler2(jQS_AlamatOrtu);
+      styler2(jQS_KodePosOrtu);
+      styler2(jQS_KeteranganITB);
+
+      // Input file tidak dapat diatur atribut "value"-nya, tidak bisa diisi dengan data SIMTU, tidak perlu diberikan style
+      //styler2(jQS_Foto);
+    } else {
+      alert("Tidak ada data wisudawan dengan NIM " + $(".mainArea > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > center:nth-child(1) > form > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3)").html() + " pada SIMTU.");
+    }
+  }).fail(function() {
+    alert( "error" );
+  })
+});
+
+// Isi data dari SIMTU button click
+$("#tab-sync-reset").click(function() {
+  // Get backup data
+  getBackup(jQS_JalurPilihan);
+  getBackup(jQS_AlamatBandung);
+  getBackup(jQS_KodePosBandung);
+  getBackup(jQS_Telepon);
+  getBackup(jQS_TeleponExt);
+  getBackup(jQS_Email);
+  getBackup(jQS_TanggalLulus);
+  getBackup(jQS_BulanLulus);
+  getBackup(jQS_TahunLulus);
+  getBackup(jQS_AlamatTetap);
+  getBackup(jQS_KodePosTetap);
+  getBackup(jQS_Judul);
+  getBackup(jQS_JudulBhsInggris);
+  getBackup(jQS_NIPPembimbing1);
+  getBackup(jQS_NamaPembimbing1);
+  getBackup(jQS_NIPPembimbing2);
+  getBackup(jQS_NamaPembimbing2);
+  getBackup(jQS_NIPPembimbing3);
+  getBackup(jQS_NamaPembimbing3);
+  getBackup(jQS_IPTahap1);
+  getBackup(jQS_IPTahap3);
+  getBackup(jQS_SKSTransfer);
+  getBackup(jQS_TOEFL);
+  getBackup(jQS_Predikat);
+  getBackup(jQS_NamaOrtu);
+  getBackup(jQS_AlamatOrtu);
+  getBackup(jQS_KodePosOrtu);
+  getBackup(jQS_KeteranganITB);
+
+  // Input file tidak dapat diatur atribut "value"-nya, tidak bisa diisi dengan data SIMTU, tidak perlu di-backup
+  //getBackup(jQS_Foto);
+
+  styler(jQS_JalurPilihan);
+  styler(jQS_AlamatBandung);
+  styler(jQS_KodePosBandung);
+  styler(jQS_Telepon);
+  styler(jQS_TeleponExt);
+  styler(jQS_Email);
+  styler(jQS_TanggalLulus);
+  styler(jQS_BulanLulus);
+  styler(jQS_TahunLulus);
+  styler(jQS_AlamatTetap);
+  styler(jQS_KodePosTetap);
+  styler(jQS_Judul);
+  styler(jQS_JudulBhsInggris);
+  styler(jQS_NIPPembimbing1);
+  styler(jQS_NamaPembimbing1);
+  styler(jQS_NIPPembimbing2);
+  styler(jQS_NamaPembimbing2);
+  styler(jQS_NIPPembimbing3);
+  styler(jQS_NamaPembimbing3);
+  styler(jQS_IPTahap1);
+  styler(jQS_IPTahap3);
+  styler(jQS_SKSTransfer);
+  styler(jQS_TOEFL);
+  styler(jQS_Predikat);
+  styler(jQS_NamaOrtu);
+  styler(jQS_AlamatOrtu);
+  styler(jQS_KodePosOrtu);
+  styler(jQS_KeteranganITB);
+
+  // Input file tidak dapat diatur atribut "value"-nya, tidak bisa diisi dengan data SIMTU, tidak perlu diberikan style
+  //styler(jQS_Foto);
+
+  $("#simtu-photo-download").remove();
+});
+
+</script>
