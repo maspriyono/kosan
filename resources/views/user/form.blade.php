@@ -21,52 +21,19 @@
 <div class="row">
   <div class="col-md-12">
       <div class="box box-warning">
-        @if ($mode == 'create')
-        {!! Form::open(array('action' => array('UserController@store'), 'method' => 'POST', 'enctype' => 'multipart/form-data')) !!}
+
+        {!! Form::open(array('action' => array($action, $model->id), 'method' => $method, 'enctype' => 'multipart/form-data')) !!}
+
           <div class="box-body">
 
                   <div class="form-group">
-                      {!! Form::label('nip', 'NIP') !!}
-                      {!! Form::text('nip', null, array('placeholder' => 'Nomor Induk Pegawai', 'class' => 'form-control')) !!}
+                      {!! Form::label('registration_number', 'Nomor KTP/Tanda Pengenal Lain') !!}
+                      {!! Form::text('registration_number', $model->registration_number, array('placeholder' => 'Nomor KTP/Nomor KTM', 'class' => 'form-control')) !!}
                   </div>
 
                   <div class="form-group">
-                      {!! Form::label('nama', 'Nama Lengkap') !!}
-                      {!! Form::text('nama', '', array('placeholder' => 'Nama Lengkap Administrator', 'class' => 'form-control')) !!}
-                  </div>
-
-                  <div class="form-group">
-                      {!! Form::label('email', 'Email') !!}
-                      {!! Form::text('email', '', array('placeholder' => 'Email', 'class' => 'form-control')) !!}
-                  </div>
-
-                  <div class="form-group">
-                      {!! Form::label('entry_year', 'Tahun Masuk') !!}
-                      {!! Form::text('entry_year', null, array('placeholder' => 'contoh: 2009', 'class' => 'form-control')) !!}
-                  </div>
-
-          </div>
-
-          <div class="box-footer">
-              <div class="btn-group">
-                  <input type="submit" class="btn btn-primary btn-flat" name="submit-button" value="Simpan">
-                  <a  href="{{ url('mahasiswa') }}" class="btn btn-flat btn-default">Kembali</a>
-              </div>
-          </div>
-
-        {!! Form::close() !!}
-        @else
-        {!! Form::model($model, array('action' => array('UserController@update', $model->id), 'method' => 'PUT', 'enctype' => 'multipart/form-data')) !!}
-          <div class="box-body">
-
-                  <div class="form-group">
-                      {!! Form::label('nip', 'NIP') !!}
-                      {!! Form::text('nip', $model->registration_number, array('placeholder' => 'Nomor Induk Mahasiswa', 'class' => 'form-control', 'disabled' => 'disabled')) !!}
-                  </div>
-
-                  <div class="form-group">
-                      {!! Form::label('nama', 'Nama Lengkap') !!}
-                      {!! Form::text('nama', $model->name, array('placeholder' => 'Nama Lengkap Mahasiswa', 'class' => 'form-control')) !!}
+                      {!! Form::label('name', 'Nama Lengkap') !!}
+                      {!! Form::text('name', $model->name, array('placeholder' => 'Nama Lengkap Administrator', 'class' => 'form-control')) !!}
                   </div>
 
                   <div class="form-group">
@@ -75,16 +42,18 @@
                   </div>
 
                   <div class="form-group">
-                      {!! Form::label('entry_year', 'Tahun Masuk') !!}
-                      {!! Form::number('entry_year', $model->entry_year, array('placeholder' => 'contoh: 2009', 'class' => 'form-control')) !!}
+                      {!! Form::label('address', 'Alamat') !!}
+                      {!! Form::textArea('address', $model->address, array('placeholder' => 'Alamat', 'class' => 'form-control')) !!}
                   </div>
 
                   <div class="form-group">
-                      {!! Form::label('photo', 'Foto Formal (Maks. 100kB)') !!}
-                      @if (isset($model->prof_pic))
-                      <br/><img src="{{ asset($model->prof_pic) }}" width="100" />
-                      @endif
-                      {!! Form::file('photo ', array('class' => 'form-control')) !!}
+                      {!! Form::label('roles', 'Roles') !!}
+                      <br/>
+                      @foreach ($roles as $role)
+                      {!! Form::checkbox("roles[]", $role->id, in_array($role->name, $rolesArray)) !!}
+                      {{ $role->name }}
+                      <br/>
+                      @endforeach
                   </div>
 
           </div>
@@ -92,12 +61,12 @@
           <div class="box-footer">
               <div class="btn-group">
                   <input type="submit" class="btn btn-primary btn-flat" name="submit-button" value="Simpan">
-                  <a  href="{{ url('mahasiswa') }}" class="btn btn-flat btn-default">Kembali</a>
+                  <a  href="{{ url('user') }}" class="btn btn-flat btn-default">Kembali</a>
               </div>
           </div>
 
         {!! Form::close() !!}
-        @endif
+        
       </div>
   </div>
 </div>

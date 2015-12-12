@@ -165,6 +165,19 @@ class Base {
       return "assets/img/default_profpic.png";
     }
 
+    public static function isAdmin() {
+      $isAdmin = false;
+      
+      foreach (Base::getUserRoles() as $key => $value) {
+        if ($value->name == ROLE_ADMIN) {
+          $isAdmin = true;
+          break;
+        }
+      }
+
+      return $isAdmin;
+    }
+
     public static function uploadProfPic($regNum, $fullpath, $request) {
       $path = "assets/img/$regNum/profile";
       $ext = pathinfo($fullpath, PATHINFO_EXTENSION);

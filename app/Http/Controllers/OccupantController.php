@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\User,
+    App\Models\UserRooms,
+    App\Models\House;
 
 class OccupantController extends Controller
 {
@@ -21,7 +23,7 @@ class OccupantController extends Controller
         $data = User::whereHas('roles', function($q) {
             $q->where('name', 'occupant');
         })->paginate(10);
-
+        echo sizeof($data);exit;
         return view('commons.list', [
             'models'       => $data,
             'page_title'  => 'Daftar Penghuni',
@@ -44,7 +46,31 @@ class OccupantController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        $houses = House::all();
+        $usersArray = [];
+        $housesArray = [];
+        $floorsArray = [1 => 1, 2 => 2, 3 => 3];
+        $roomsArray = [6 => 1, 7 => 2, 8 => 3];
+
+        foreach ($users as $key => $value) {
+            $usersArray[$value->id] = $value->name;
+        }
+
+        foreach ($houses as $key => $value) {
+            $housesArray[$value->id] = $value->name;
+        }
+
+        return view($this->baseView . '/form', [
+            'page_title' => 'Form Assignment Penghuni',
+            'model' => new User(),
+            'users' => $usersArray,
+            'houses' => $housesArray,
+            'floors' => $floorsArray,
+            'rooms' => $roomsArray,
+            'action' => 'OccupantController@store',
+            'method' => 'POST',
+        ]);
     }
 
     /**
@@ -55,7 +81,19 @@ class OccupantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+          'occupant' => 'required',
+          'room' => 'required',
+        ]);
+
+        $model = UserRooms::create([
+            'user_id' => $request->input('occupant'),
+            'room_id' => $request->input('room'),
+        ]);
+
+        // Finish, redirect
+        return redirect($this->baseView . '/' . $model->id)
+        ->with('message', 'Berhasil membuat data pengguna baru');
     }
 
     /**

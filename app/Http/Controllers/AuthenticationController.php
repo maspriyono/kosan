@@ -40,7 +40,7 @@ class AuthenticationController extends Controller {
                 $user_data = array(
                     'id' => $user->id,
                     'name' => $user->name,
-                    'role' => $user->roles
+                    'roles' => $user->roles
                 );
 
                 Session::put(SESSION_LOGIN, $user_data);

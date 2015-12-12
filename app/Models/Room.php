@@ -23,4 +23,8 @@ class Room extends Model
     public function floor() {
         return $this->belongsTo('App\Models\Floor');
     }
+
+    public function users() {
+        return $this->hasMany('App\Models\User', 'user_rooms', 'user_id');
+    }
 }

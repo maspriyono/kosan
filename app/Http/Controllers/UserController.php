@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\Base;
-use App\Models\Student;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\RoleUser;
+use App\Models\Student,
+    App\Models\User,
+    App\Models\Role,
+    App\Models\UserRoles;
 use Redirect;
 use Session;
 use Input;
@@ -60,9 +60,13 @@ class UserController extends Controller
      */
     public function create()
     {
-      return view('administrator/user/form', [
-        'mode'        => 'create',
-        'page_title'  => 'Form Penambahan Pengguna'
+      return view($this->baseView . '/form', [
+        'page_title' => 'Form Penambahan Pengguna',
+        'roles' => Role::all(),
+        'model' => new User(),
+        'action' => 'UserController@store',
+        'method' => 'POST',
+        'rolesArray' => [],
       ]);
     }
 
@@ -75,23 +79,34 @@ class UserController extends Controller
     public function store(Request $request)
     {
       $this->validate($request, [
-          'nip' => 'required|max:8|unique:users,registration_number',
-          'nama' => 'required',
+          'registration_number' => 'required|unique:users,registration_number',
+          'name' => 'required',
           'email' => 'required|unique:users,email',
       ]);
 
+      // Default password
       $password = "default";
 
+      // Create a new user
       $user = User::create([
-        'registration_number' => $request->input('nip'),
-        'name' => $request->input('nama'),
+        'registration_number' => $request->input('registration_number'),
+        'name' => $request->input('name'),
         'email' => $request->input('email'),
+        'address' => $request->input('address'),
         'password' => bcrypt($password),
-        'entry_year' => $request->input('entry_year'),
       ]);
 
-      Session::flash('message', "Berhasil membuat data administrator baru");
-      return redirect('user/'. $user->id);
+      // Assigning roles
+      foreach ($request->input('roles') as $key => $value) {
+        UserRoles::create([
+          'user_id' => $user->id,
+          'role_id' => $value,
+        ]);
+      }
+
+      // Finish, redirect
+      return redirect('user/'. $user->id)
+        ->with('message', 'Berhasil membuat data pengguna baru');
     }
 
     /**
@@ -124,24 +139,30 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $is_admin = Base::getUserRole() !== ROLE_STUDENTS;
         $user = User::find($id);
-        if (!$is_admin) {
+        $isAdmin = Base::isAdmin();
+        $roles = Role::all();
+
+        if (!$isAdmin) {
             return view('administrator/student/form', [
-                'model'        => $user,
-                'role'        => Base::getUserRole(),
-                'page_title'  => 'Form Pengubahan Profil Mahasiswa',
-                'is_admin'  => $is_admin,
-                'mode'		=> 'update'
+                'model' => $user,
+                'role' => Base::getUserRoles(),
+                'page_title' => 'Form Pengubahan Profil Mahasiswa',
+                'is_admin' => $isAdmin,
+                'action' => 'UserController@update',
+                'method' => 'PUT',
+                'roles' => $roles
             ]);
         } else {
-            return view('administrator/user/form', [
-                'user'        => $user,
-                'role'        => Base::getUserRole(),
-                'mode'        => 'update',
-                'model'       => $user,
-                'is_admin'  => $is_admin,
-                'page_title'  => 'Ubah Data Pengguna'
+            return view('user.form', [
+                'roles' => Base::getUserRoles(),
+                'model' => $user,
+                'is_admin' => $isAdmin,
+                'page_title' => 'Ubah Data Pengguna',
+                'action' => 'UserController@update',
+                'method' => 'PUT',
+                'roles' => $roles,
+                'rolesArray' => $this->getRolesArray()
             ]);
         }      
     }
@@ -182,10 +203,6 @@ class UserController extends Controller
 
       if ($request->input('email') != null) {
         $user->email = $request->input('email');
-      }
-
-      if ($request->input('entry_year') != null) {
-        $user->entry_year = $request->input('entry_year');
       }
 
       // Set photo if exists
@@ -237,5 +254,15 @@ class UserController extends Controller
           ->paginate(10),
         'page_title' => 'Daftar Pengguna SIMTU'
       ]);
+    }
+
+    private function getRolesArray() {
+        $rolesArray = [];
+
+        foreach (Base::getUserRoles() as $key => $value) {
+          $rolesArray[] = $value->name;
+        }
+
+        return $rolesArray;
     }
 }

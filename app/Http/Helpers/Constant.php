@@ -4,6 +4,7 @@ define('SESSION_LOGIN', 'userid');
 
 define('ROLE_EMPLOYEE', 'employee');
 define('ROLE_STUDENTS', 'student');
+define('ROLE_ADMIN', 'admin');
 
 define('STUDENT_STATUS_NOT_VERIFIED', 'not verified');
 define('STUDENT_STATUS_REVISED', 'revised');

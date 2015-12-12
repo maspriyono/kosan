@@ -16,6 +16,7 @@ class UserTableSeeder extends Seeder
             'name'      => 'admin',
             'email'     => 'admin@gmail.com',
             'address'   => 'address example',
+            'registration_number' => '123456',
             'password'  => Base::hashInput('admin')
         ]);
 

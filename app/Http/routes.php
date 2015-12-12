@@ -49,6 +49,7 @@ Route::group(['prefix' => 'occupant'], function() {
     Route::get('/', 'OccupantController@index');
     Route::get('search', 'OccupantController@search');
     Route::get('show', 'OccupantController@show');
+    Route::get('new', 'OccupantController@create');
     Route::post('/', 'OccupantController@store');
     Route::group(['prefix' => '{id}'], function() {
         Route::get('/', 'OccupantController@show');
