@@ -44,6 +44,13 @@
                 </a>
             </li>
 
+            <li>
+                <a href="{{ url ('transaction') }}">
+                    <i class="fa fa-money"></i>
+                    <span>Pembayaran</span>
+                </a>
+            </li>
+
             <!-- Data Pengguna -->
             <li class="header">DATA PENGGUNA</li>
 

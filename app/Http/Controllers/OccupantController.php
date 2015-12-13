@@ -21,10 +21,10 @@ class OccupantController extends Controller
     public function index()
     {
         $data = User::whereHas('roles', function($q) {
-            $q->where('name', 'occupant');
+            $q->where('name', '=', 'attendant');
         })->paginate(10);
-        echo sizeof($data);exit;
-        return view('commons.list', [
+
+        return view('occupant.list', [
             'models'       => $data,
             'page_title'  => 'Daftar Penghuni',
             'addButtonText'  => 'Tambah Penghuni Baru',
@@ -34,8 +34,8 @@ class OccupantController extends Controller
             'destroyTarget' => 'OccupantController@destroy',
             'searchPlaceholder' => 'Cari nama penghuni',
             'deleteMessage' => 'Apakah Anda yakin ingin menghapus data penghuni ini?',
-            'headerTexts' => ['Nama', 'Alamat'],
-            'tableCols' => ['name', 'address']
+            'headerTexts' => ['Nama', 'Nomor Kamar'],
+            'tableCols' => ['name']
         ]);
     }
 
@@ -46,30 +46,16 @@ class OccupantController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        $houses = House::all();
-        $usersArray = [];
-        $housesArray = [];
-        $floorsArray = [1 => 1, 2 => 2, 3 => 3];
-        $roomsArray = [6 => 1, 7 => 2, 8 => 3];
-
-        foreach ($users as $key => $value) {
-            $usersArray[$value->id] = $value->name;
-        }
-
-        foreach ($houses as $key => $value) {
-            $housesArray[$value->id] = $value->name;
-        }
-
         return view($this->baseView . '/form', [
             'page_title' => 'Form Assignment Penghuni',
             'model' => new User(),
-            'users' => $usersArray,
-            'houses' => $housesArray,
-            'floors' => $floorsArray,
-            'rooms' => $roomsArray,
+            'users' => $this->getUsers(),
+            'houses' => $this->getHouses(),
+            'floors' => $this->getFloors(),
+            'rooms' => $this->getRooms(),
             'action' => 'OccupantController@store',
             'method' => 'POST',
+            'base' => $this->baseView,
         ]);
     }
 
@@ -92,7 +78,7 @@ class OccupantController extends Controller
         ]);
 
         // Finish, redirect
-        return redirect($this->baseView . '/' . $model->id)
+        return redirect($this->baseView . '/' . $request->input('occupant'))
         ->with('message', 'Berhasil membuat data pengguna baru');
     }
 
@@ -126,7 +112,19 @@ class OccupantController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+
+        return view('occupant.form', [
+            'model' => $user,
+            'page_title' => 'Ubah Data Penghuni',
+            'action' => 'OccupantController@update',
+            'method' => 'PUT',
+            'base' => $this->baseView,
+            'users' => $this->getUsers(),
+            'houses' => $this->getHouses(),
+            'floors' => $this->getFloors(),
+            'rooms' => $this->getRooms(),
+        ]);
     }
 
     /**
@@ -154,5 +152,39 @@ class OccupantController extends Controller
 
     public function search() {
 
+    }
+
+    public function getUsers() {
+        $users = User::all();
+        $usersArray = [];
+
+        foreach ($users as $key => $value) {
+            $usersArray[$value->id] = $value->name;
+        }
+
+        return $usersArray;
+    }
+
+    public function getHouses() {
+        $houses = House::all();
+        $housesArray = [];
+        
+        foreach ($houses as $key => $value) {
+            $housesArray[$value->id] = $value->name;
+        }
+
+        return $housesArray;
+    }
+
+    public function getFloors() {
+        $floorsArray = [1 => 1, 2 => 2, 3 => 3];
+
+        return $floorsArray;
+    }
+
+    public function getRooms() {
+        $roomsArray = [6 => 1, 7 => 2, 8 => 3];
+
+        return $roomsArray;
     }
 }

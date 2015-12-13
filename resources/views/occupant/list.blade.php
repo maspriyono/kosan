@@ -47,10 +47,14 @@ function confirmDelete(id) {
             
             @foreach ($tableCols as $col)
               <td>{{ $model[$col] }}</td>
+              <td>
+                @foreach ($model->rooms as $val)
+                  {{ $val->number }}<br/>
+                @endforeach
+              </td>
             @endforeach
 
             @include ('commons.action-choice')
-            
           </tr>
           @endforeach
           @else

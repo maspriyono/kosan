@@ -59,6 +59,21 @@ Route::group(['prefix' => 'occupant'], function() {
     });
 });
 
+Route::group(['prefix' => 'transaction'], function() {
+    Route::get('/', 'TransactionController@index');
+    Route::get('search', 'TransactionController@search');
+    Route::get('show', 'TransactionController@show');
+    Route::get('new', 'TransactionController@create');
+    Route::post('/', 'TransactionController@store');
+    Route::group(['prefix' => '{id}'], function() {
+        Route::get('/', 'TransactionController@show');
+        Route::get('edit', 'TransactionController@edit');
+        Route::put('/', 'TransactionController@update');
+        Route::delete('/', 'TransactionController@destroy');
+    });
+});
+
+
 Route::group(['prefix' => 'house'], function() {
     Route::get('/', 'HouseController@index');
     Route::get('new', 'HouseController@create');

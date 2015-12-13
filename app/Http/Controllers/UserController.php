@@ -151,6 +151,7 @@ class UserController extends Controller
                 'is_admin' => $isAdmin,
                 'action' => 'UserController@update',
                 'method' => 'PUT',
+                'base' => $this->baseView,
                 'roles' => $roles
             ]);
         } else {
@@ -161,6 +162,7 @@ class UserController extends Controller
                 'page_title' => 'Ubah Data Pengguna',
                 'action' => 'UserController@update',
                 'method' => 'PUT',
+                'base' => $this->baseView,
                 'roles' => $roles,
                 'rolesArray' => $this->getRolesArray()
             ]);

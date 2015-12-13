@@ -2,7 +2,7 @@
 <header class="main-header">
 
     <!-- Logo -->
-    <a href="#" class="logo"><b>SIM</b>TU</a>
+    <a href="#" class="logo"><b>BABEH</b> KOS</a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
