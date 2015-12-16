@@ -1,22 +1,8 @@
 @extends('dashboard')
 
 @section('content')
-@if (count($errors) > 0)
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
 
-@if (Session::has('message'))
-<div class="alert alert-success">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    {{ Session::get('message') }}
-</div>
-@endif
+@include ('commons.notifications')
 
 <div class="row">
   <div class="col-md-12">
@@ -59,10 +45,7 @@
           </div>
 
           <div class="box-footer">
-              <div class="btn-group">
-                  <input type="submit" class="btn btn-primary btn-flat" name="submit-button" value="Simpan">
-                  <a  href="{{ url($base) }}" class="btn btn-flat btn-default">Kembali</a>
-              </div>
+              @include ('commons.save-back', array('base' => $base))
           </div>
 
         {!! Form::close() !!}

@@ -1,5 +1,7 @@
 @extends('dashboard')
 
+@include ('commons.notifications')
+
 @section('content')
 <div class="row">
   <div class="col-md-8">
@@ -27,19 +29,11 @@
         </div>
 
       </div>
+      
       <div class="box-footer">
-        <div class="btn-group">
-            <input type="submit"
-            class="btn btn-primary btn-flat"
-            name="submit-button"
-            value="Simpan">
-
-            <a  href="{{ url('role') }}"
-            class="btn btn-flat btn-default">
-            Kembali
-          </a>
-        </div>
+        @include ('commons.save-back', array('base' => $base))
       </div>
+
       {!! Form::close() !!}
     </div>
   </div>

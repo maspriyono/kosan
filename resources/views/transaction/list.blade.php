@@ -18,50 +18,40 @@ function confirmDelete(id) {
   <div class="col-md-12">
     <div class="box box-warning">
       <div class="box-header">
-        <div class="form-group">
-          <div class="col-md-2">
-            <a href="{{ url ($base . '/new') }}" class="btn btn-flat btn-sm btn-default"><i class="fa fa-plus"></i> {{ $addButtonText }}</a>
-          </div>
-          <div class="col-md-10">
-            {!! Form::open(array('action' => array($searchTarget), 'method' => 'GET', 'enctype' => 'multipart/form-data')) !!}
-            <input name="query" type="text" class="form-control" placeholder="{{ $searchPlaceholder }}"/>
-            {!! Form::close() !!}
-          </div>
-        </div>
+        <h4>Catatan Bulanan Tahun 2015 <a href="{{ $base }}/new" class="btn btn-default btn-flat btn-sm pull-right"><i class="fa fa-plus"></i> Tambah</a></h4>
       </div>
       <div class="box-body">
         <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab">Tab 1</a></li>
-              <li><a href="#tab_2" data-toggle="tab">Tab 2</a></li>
-              <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                  Dropdown <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-                  <li role="presentation" class="divider"></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-                </ul>
-              </li>
+            <ul class="nav nav-tabs nav-warning">
+              @foreach ($months as $k => $month)
+                @if ($k == 1)
+                <li class="active"><a href="#tab_{{ $k }}" data-toggle="tab">{{ $month }}</a></li>
+                @else
+                <li><a href="#tab_{{ $k }}" data-toggle="tab">{{ $month }}</a></li>
+                @endif
+              @endforeach
               <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="tab_1">
-                <b>How to use:</b>
-
-                <p>Exactly like the original bootstrap tabs except you should use
-                  the custom wrapper <code>.nav-tabs-custom</code> to achieve this style.</p>
-                A wonderful serenity has taken possession of my entire soul,
-                like these sweet mornings of spring which I enjoy with my whole heart.
-                I am alone, and feel the charm of existence in this spot,
-                which was created for the bliss of souls like mine. I am so happy,
-                my dear friend, so absorbed in the exquisite sense of mere tranquil existence,
-                that I neglect my talents. I should be incapable of drawing a single stroke
-                at the present moment; and yet I feel that I never was a greater artist than now.
+                <table class="table table-bordered table-hovered table-striped">
+                  <thead>
+                    <th class="text-center">No</th>
+                    <th class="text-center">Nama Transaksi</th>
+                    <th class="text-center">Nominal</th>
+                    <th class="text-center">Jenis</th>
+                    <th class="text-center">Pilihan</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>1</td>
+                      <td>1</td>
+                      <td>1</td>
+                      <td>1</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_2">

@@ -1,22 +1,8 @@
 @extends('dashboard')
 
 @section('content')
-@if (count($errors) > 0)
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
 
-@if (Session::has('message'))
-<div class="alert alert-success">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    {{ Session::get('message') }}
-</div>
-@endif
+@include ('commons.notifications')
 
 <div class="row">
   <div class="col-md-6">
@@ -131,8 +117,7 @@
     var name = $('#input-floor-' + floor).val();
 
     if ({{ sizeof($model->floors) > 0 ? 'true' : 'false' }}) {
-      var names = {{ $model->floors[floors]->rooms }};
-      console.log(names);
+      
     } else {
       $('#floor-' + floor).show();
       $('#floor-' + floor).append('<tr><td>' + name + '</td><td><button class="btn btn-danger btn-flat"><i class="fa fa-trash"></i></button></td></tr>');

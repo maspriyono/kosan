@@ -45,7 +45,8 @@ class HouseController extends Controller
     {
         return view($this->baseView . '.form', [
             'page_title'  => 'Form Pembuatan Rumah Kos',
-            'mode' => 'new'
+            'mode' => 'new',
+            'model' => new House()
         ]);
     }
 

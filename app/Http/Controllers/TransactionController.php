@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 
 class TransactionController extends Controller
 {
@@ -21,16 +22,17 @@ class TransactionController extends Controller
 
         return view('transaction.list', [
             'models'       => null,
-            'page_title'  => 'Daftar Pengguna',
+            'page_title'  => 'Daftar Transaksi',
             'addButtonText'  => 'Tambah Pengguna Baru',
             'base' => $this->baseView,
-            'searchTarget' => 'UserController@search',
-            'showTarget' => 'UserController@show',
-            'destroyTarget' => 'UserController@destroy',
+            'searchTarget' => 'TransactionController@search',
+            'showTarget' => 'TransactionController@show',
+            'destroyTarget' => 'TransactionController@destroy',
             'searchPlaceholder' => 'Cari nama pengguna',
             'deleteMessage' => 'Apakah Anda yakin ingin menghapus data pengguna ini?',
             'headerTexts' => ['Nama', 'Alamat'],
-            'tableCols' => ['name', 'address']
+            'tableCols' => ['name', 'address'],
+            'months' => $this->getMonthsArray()
         ]);
     }
 
@@ -41,7 +43,22 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        //
+        return view('transaction.form', [
+            'model' => new Transaction(),
+            'page_title'  => 'Transaksi Baru',
+            'action'  => 'TransactionController@store',
+            'addButtonText'  => 'Tambah Pengguna Baru',
+            'method'  => 'POST',
+            'base' => $this->baseView,
+            'searchTarget' => 'TransactionController@search',
+            'showTarget' => 'UserController@show',
+            'destroyTarget' => 'TransactionController@destroy',
+            'searchPlaceholder' => 'Cari nama pengguna',
+            'deleteMessage' => 'Apakah Anda yakin ingin menghapus data pengguna ini?',
+            'headerTexts' => ['Nama', 'Alamat'],
+            'tableCols' => ['name', 'address'],
+            'months' => $this->getMonthsArray()
+        ]);
     }
 
     /**
@@ -98,5 +115,22 @@ class TransactionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function getMonthsArray() {
+        return [
+            1 => "Januari",
+            2 => "Februari",
+            3 => "Maret",
+            4 => "April",
+            5 => "Mei",
+            6 => "Juni",
+            7 => "Juli",
+            8 => "Agustus",
+            9 => "September",
+            10 => "Oktober",
+            11 => "November",
+            12 => "Desember",
+        ];
     }
 }

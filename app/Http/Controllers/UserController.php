@@ -67,6 +67,7 @@ class UserController extends Controller
         'action' => 'UserController@store',
         'method' => 'POST',
         'rolesArray' => [],
+        'base' => $this->baseView
       ]);
     }
 

@@ -53,7 +53,10 @@ class RoleController extends Controller
      */
     public function create()
     {
-      return view('administrator/role/form', ['mode' => 'create']);
+        return view('administrator/role/form', [
+            'mode' => 'create',
+            'base' => $this->baseView,
+        ]);
     }
 
     /**
