@@ -83,6 +83,7 @@ class UserController extends Controller
           'registration_number' => 'required|unique:users,registration_number',
           'name' => 'required',
           'email' => 'required|unique:users,email',
+          'phone' => 'required',
       ]);
 
       // Default password
@@ -94,6 +95,7 @@ class UserController extends Controller
         'name' => $request->input('name'),
         'email' => $request->input('email'),
         'address' => $request->input('address'),
+        'phone' => $request->input('phone'),
         'password' => bcrypt($password),
       ]);
 
@@ -167,9 +169,9 @@ class UserController extends Controller
                 'roles' => $roles,
                 'rolesArray' => $this->getRolesArray()
             ]);
-        }      
+        }
     }
-    
+
     public function editAction(Request $request, $id) {
         $student = Student::find($id);
         $student->update([
@@ -183,7 +185,7 @@ class UserController extends Controller
             'alamat_tetap'  => $request->input('alamat_tetap'),
             'kodepos_tetap' => $request->input('kodepos_tetap'),
         ]);
-        
+
         return redirect('user/'. $id . '/edit');
     }
 
@@ -200,13 +202,14 @@ class UserController extends Controller
       $user = User::find($id);
 
       // Set proper/updated values
-      if ($request->input('nama') != null) {
-        $user->name = $request->input('nama');
-      }
-
-      if ($request->input('email') != null) {
-        $user->email = $request->input('email');
-      }
+      $user->update([
+          'registration_number' => $request->input('registration_number'),
+          'name' => $request->input('name'),
+          'email' => $request->input('email'),
+          'address' => $request->input('address'),
+          'phone' => $request->input('phone'),
+          'password' => bcrypt($request->input('password')),
+      ]);
 
       // Set photo if exists
       if ($request->hasFile('photo_')) {
@@ -221,7 +224,8 @@ class UserController extends Controller
       // Save user updated data
       $user->save();
 
-      return Redirect::back()->with('message','Berhasil mengubah data !');
+      return redirect('user/'. $user->id)
+        ->with('message','Berhasil mengubah data !');
     }
 
     /**

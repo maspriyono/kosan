@@ -18,7 +18,27 @@
 
             <div class="form-group">
                 {!! Form::label('nominal', 'Nominal') !!}
-                {!! Form::text('nominal', $model->id, ['class' => 'form-control', 'placeholder' => 'Nominal']) !!}
+                {!! Form::text('nominal', $model->nominal, ['class' => 'form-control', 'placeholder' => 'Nominal']) !!}
+            </div>
+
+            <div class="form-group">
+                {!! Form::label('sender', 'Telah Terima Dari') !!}
+                {!! Form::select('sender', $users, null, ['class' => 'form-control', 'placeholder' => 'Already Received From']) !!}
+            </div>
+
+            <div class="form-group">
+                {!! Form::label('receiver', 'Penerima') !!}
+                {!! Form::select('receiver', $users, null, ['class' => 'form-control', 'placeholder' => 'Receiver']) !!}
+            </div>
+
+            <div class="form-group">
+                {!! Form::label('from', 'From (month)') !!}
+                {!! Form::number('from', $model->from, ['class' => 'form-control', 'placeholder' => 'From']) !!}
+            </div>
+
+            <div class="form-group">
+                {!! Form::label('to', 'To (month)') !!}
+                {!! Form::number('to', $model->to, ['class' => 'form-control', 'placeholder' => 'To']) !!}
             </div>
 
             <div class="form-group">

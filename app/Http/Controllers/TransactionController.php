@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
+use App\Models\User;
 
 class TransactionController extends Controller
 {
@@ -18,13 +19,18 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //$data = User::paginate(10);
+        $data = [];
 
+        for ($i = 1; $i < 13; $i++) {
+            $data[$i] = Transaction::whereMonth('tx_date', '=', $i)->get();
+        }
+        
         return view('transaction.list', [
             'models'       => null,
             'page_title'  => 'Daftar Transaksi',
             'addButtonText'  => 'Tambah Pengguna Baru',
             'base' => $this->baseView,
+            'data' => $data,
             'searchTarget' => 'TransactionController@search',
             'showTarget' => 'TransactionController@show',
             'destroyTarget' => 'TransactionController@destroy',
@@ -43,6 +49,14 @@ class TransactionController extends Controller
      */
     public function create()
     {
+        $usersDb = User::all();
+
+        $users = [];
+
+        foreach ($usersDb as $key => $value) {
+            $users[$value->id] = $value->name;
+        }
+
         return view('transaction.form', [
             'model' => new Transaction(),
             'page_title'  => 'Transaksi Baru',
@@ -57,6 +71,7 @@ class TransactionController extends Controller
             'deleteMessage' => 'Apakah Anda yakin ingin menghapus data pengguna ini?',
             'headerTexts' => ['Nama', 'Alamat'],
             'tableCols' => ['name', 'address'],
+            'users' => $users,
             'months' => $this->getMonthsArray()
         ]);
     }
@@ -69,7 +84,30 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'nominal' => 'required',
+            'sender' => 'required',
+            'receiver' => 'required',
+            'from' => 'required',
+            'to' => 'required',
+        ]);
+
+        $data = Transaction::create([
+            'name' => $request->input('name'),
+            'tx_date' => date('Y-m-d'),
+            'nominal' => $request->input('nominal'),
+            'sender_id' => $request->input('sender'),
+            'receiver_id' => $request->input('receiver'),
+            'from' => $request->input('from'),
+            'to' => $request->input('to'),
+            'status' => 'paid',
+            'description' => $request->input('description'),
+        ]);
+
+        // Finish, redirect
+        return redirect("transaction/$data->id")
+          ->with('message', 'Berhasil membuat transaksi baru');
     }
 
     /**
@@ -80,7 +118,20 @@ class TransactionController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('commons.detail', [
+              'model' => Transaction::find($id),
+              'page_title' => 'Detil Data Transaksi',
+              'headerDisplay' => 'name',
+              'base' => $this->baseView,
+              'destroyTarget' => 'TransactionController@destroy',
+              'displayCols' => [
+                  'name' => 'Nama Pengguna',
+                  'sender' => 'Telah Terima Dari',
+                  'receiver' => 'Diterima Oleh',
+                  'nominal' => 'Nominal',
+                  'description' => 'Deskripsi'
+              ]
+          ]);
     }
 
     /**

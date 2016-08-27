@@ -35,6 +35,8 @@ class InsertFloorTable extends Migration
      */
     public function down()
     {
+        Schema::drop('user_rooms');
+        Schema::drop('rooms');
         Schema::drop('floors');
     }
 }

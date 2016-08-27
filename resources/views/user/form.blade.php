@@ -8,7 +8,7 @@
   <div class="col-md-12">
       <div class="box box-warning">
 
-        {!! Form::open(array('action' => array($action, $model->id), 'method' => $method, 'enctype' => 'multipart/form-data')) !!}
+        {!! Form::model($model, array('action' => array($action, $model->id), 'method' => $method, 'enctype' => 'multipart/form-data')) !!}
 
           <div class="box-body">
 
@@ -25,6 +25,11 @@
                   <div class="form-group">
                       {!! Form::label('email', 'Email') !!}
                       {!! Form::text('email', $model->email, array('placeholder' => 'Email', 'class' => 'form-control')) !!}
+                  </div>
+
+                  <div class="form-group">
+                      {!! Form::label('phone', 'Phone') !!}
+                      {!! Form::text('phone', $model->phone, array('placeholder' => 'Phone Number', 'class' => 'form-control')) !!}
                   </div>
 
                   <div class="form-group">
@@ -49,7 +54,7 @@
           </div>
 
         {!! Form::close() !!}
-        
+
       </div>
   </div>
 </div>

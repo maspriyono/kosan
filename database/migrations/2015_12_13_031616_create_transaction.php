@@ -19,6 +19,14 @@ class CreateTransaction extends Migration
             $table->integer('nominal');
             $table->string('status');
             $table->string('description');
+            $table->integer('from');
+            $table->integer('to');
+
+            $table->integer('sender_id')->unsigned();
+            $table->foreign('sender_id')->references('id')->on('users');
+
+            $table->integer('receiver_id')->unsigned();
+            $table->foreign('receiver_id')->references('id')->on('users');
 
             $table->timestamps();
         });

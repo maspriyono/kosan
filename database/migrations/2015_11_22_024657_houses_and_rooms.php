@@ -48,7 +48,5 @@ class HousesAndRooms extends Migration
     public function down()
     {
         Schema::drop('houses');
-        Schema::drop('rooms');
-        Schema::drop('user_rooms');
     }
 }
