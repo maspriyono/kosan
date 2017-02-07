@@ -20,7 +20,7 @@ class OccupantController extends Controller
      */
     public function index()
     {
-        $data = User::whereHas('roles', function($q) {
+        $data = User::whereNotNull('rooms', function($q) {
             $q->where('name', '=', 'attendant');
         })->paginate(10);
 
@@ -168,7 +168,7 @@ class OccupantController extends Controller
     public function getHouses() {
         $houses = House::all();
         $housesArray = [];
-        
+
         foreach ($houses as $key => $value) {
             $housesArray[$value->id] = $value->name;
         }

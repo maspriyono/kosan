@@ -86,7 +86,7 @@ class UserController extends Controller
           'phone' => 'required',
       ]);
 
-      // Default password
+    //   // Default password
       $password = "default";
 
       // Create a new user
@@ -106,6 +106,16 @@ class UserController extends Controller
           'role_id' => $value,
         ]);
       }
+
+      // Send activation email
+      $email = $request->input('email');
+      \Mail::send('emails.registration', [
+          'username' => $email,
+          'password' => $password
+      ], function ($message) use ($email) {
+          $message->to($email)
+              ->subject('Registrasi Pengguna Kosan Rahayu');
+      });
 
       // Finish, redirect
       return redirect('user/'. $user->id)

@@ -68,20 +68,20 @@
 
       $('#floor').html(content);
       $('#hidden-house').append('<input type="hidden" value="' + $(this).val() + '" name="floors_total"/>');
-      
+
     });
 
     if ({{ $model->floors_total > 0 ? 'true' : 'false'}}) {
       $('#floors_total').change();
 
-      for (var i = 0; i < {{ $model->floors_total }}; i++) {
+      for (var i = 0; i < {{ $model->floors_total > 0 ? $model->floors_total : 0 }}; i++) {
         addRoom(i);
       }
     }
   });
 
   function floorBuilder(floor) {
-    var template = 
+    var template =
       '<div class="box box-primary">'+
         '<div class="box-header">'+
           '<p>Lantai ' + floor + '</p>'+
@@ -117,7 +117,7 @@
     var name = $('#input-floor-' + floor).val();
 
     if ({{ sizeof($model->floors) > 0 ? 'true' : 'false' }}) {
-      
+
     } else {
       $('#floor-' + floor).show();
       $('#floor-' + floor).append('<tr><td>' + name + '</td><td><button class="btn btn-danger btn-flat"><i class="fa fa-trash"></i></button></td></tr>');
